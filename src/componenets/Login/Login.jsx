@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import AuthProviders, { AuthContext } from "../../providers/AuthProviders";
 
 const Login = () => {
-    const {user, signIn} = useContext(AuthContext);
-    
-
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
 
   const handleLogin = (event) => {
     // for stop page reload
@@ -17,15 +15,27 @@ const Login = () => {
     console.log(email, password);
 
     signIn(email, password)
-    .then( result => {
+      .then((result) => {
         const user = result.user;
         console.log(user);
-        form.reset()
-    })
-    .catch(err => {
+        form.reset();
+      })
+      .catch((err) => {
         console.error(err);
-    })
+      });
   };
+
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
       <div className="hero min-h-screen bg-base-200">
@@ -74,6 +84,15 @@ const Login = () => {
                 {" "}
                 If you dont have account, Register Please!
               </Link>
+
+              <div className="form-control mt-6">
+                  <button
+                    onClick={handleGoogleSignIn}
+                    className="btn btn-primary"
+                  >
+                    SignIn With Google
+                  </button>
+                </div>
             </div>
           </div>
         </div>
